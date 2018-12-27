@@ -311,7 +311,7 @@ training = True
 Train model
 """
 if training:
-    N_EPOCHS = 2
+    N_EPOCHS = 3
     CLIP = 10
     SAVE_DIR = 'models/bidirectional_16x16'
     res_train = []
@@ -338,7 +338,7 @@ if training:
     np.savetxt('./csv_16x16/train_optimal_distance.csv',optimal_train,delimiter=',',fmt='%f')
     np.savetxt('./csv_16x16/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')
     epochtime = time.time()-start
-    print(str(epochtime))
+    print("used time: "+ str(epochtime))
 else:
     """
     Test model
