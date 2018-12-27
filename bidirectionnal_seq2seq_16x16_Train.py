@@ -6,6 +6,7 @@ import random
 import math
 import os
 import numpy as np
+import time
 from performancePlot import computeDistance
 
 class Encoder(nn.Module):
@@ -246,8 +247,8 @@ def loading_data(num_robots):
                                        dtype='float')
     assignmentMatrices2 = assignmentMatrices2.values
     assignmentMatrices  = np.concatenate((assignmentMatrices1,assignmentMatrices2))
-    size0,size1  = distanceMatrices.shape()
-    size2,size3  = assignmentMatrices.shape()
+    size0,size1  = distanceMatrices.shape
+    size2,size3  = assignmentMatrices.shape
     print(str(size0)+" " + str(size1)+"  "+str(size2)+" "+str(size3))
     # y_train = to_categorical(y_train)
     N, M = assignmentMatrices.shape
@@ -310,7 +311,7 @@ training = True
 Train model
 """
 if training:
-    N_EPOCHS = 50
+    N_EPOCHS = 2
     CLIP = 10
     SAVE_DIR = 'models/bidirectional_16x16'
     res_train = []
@@ -319,7 +320,7 @@ if training:
 
     if not os.path.isdir('{}'.format(SAVE_DIR)):
         os.makedirs('{}'.format(SAVE_DIR))
-
+    start = time.time()
     for epoch in range(N_EPOCHS):
 
         train_loss, acc, avg_pred_dis, avg_optimal_dis = train(model, train_iterator, optimizer, criterion, CLIP)
@@ -336,11 +337,13 @@ if training:
     np.savetxt('./csv_16x16/train_distance.csv',res_train,delimiter=',',fmt='%f')
     np.savetxt('./csv_16x16/train_optimal_distance.csv',optimal_train,delimiter=',',fmt='%f')
     np.savetxt('./csv_16x16/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')
+    epochtime = time.time()-start
+    print(str(epochtime))
 else:
     """
     Test model
     """
-    N_EPOCHS = 50
+    N_EPOCHS = 2
     res_train = []
     res = []
     optimal_train = []
@@ -363,8 +366,8 @@ else:
         test_acc_list.append(test_acc)
 
         print('EPOCH: {} | Test acc: {} '.format(epoch+1,test_acc))#, train_acc))
-    np.savetxt('./csv_16x16/train_distance.csv',res_train,delimiter=',',fmt='%f')
-    np.savetxt('./csv_16x16/optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
+    np.savetxt('./csv_16x16/test_distance.csv',res_train,delimiter=',',fmt='%f')
+    np.savetxt('./csv_16x16/test_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
     np.savetxt('./csv_16x16/test_acc.csv',test_acc_list,delimiter=',',fmt='%f')	
     #plotDistance(iterations=np.linspace(1, N_EPOCHS, N_EPOCHS), optimalDistance=np.asarray(optimal_train),
     #            totalDistances=np.asarray(res_train))
