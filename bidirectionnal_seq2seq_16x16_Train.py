@@ -222,27 +222,27 @@ def loading_data(num_robots):
     #assignmentMatrices = np.loadtxt('assignmentMatrices.csv', dtype=int)
     distanceMatrices1 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_500w.csv',
                                        header=None,
-                                       nrows=2000,
+                                       nrows=5000000,
                                        sep=' ',
                                        dtype='float')
     distanceMatrices1 = distanceMatrices1.values
 
     distanceMatrices2 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_300w.csv',
                                        header=None,
-                                       nrows=1000,
+                                       nrows=3000000,
                                        sep=' ',
                                        dtype='float')
     distanceMatrices2 = distanceMatrices2.values
     distanceMatrices = np.concatenate((distanceMatrices1,distanceMatrices2))
     assignmentMatrices1 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_500w.csv',
                                        header=None,
-                                       nrows=2000,
+                                       nrows=5000000,
                                        sep=' ',
                                        dtype='float')
     assignmentMatrices1 = assignmentMatrices1.values
     assignmentMatrices2 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_300w.csv',
                                        header=None,
-                                       nrows=1000,
+                                       nrows=3000000,
                                        sep=' ',
                                        dtype='float')
     assignmentMatrices2 = assignmentMatrices2.values
@@ -311,7 +311,7 @@ training = True
 Train model
 """
 if training:
-    N_EPOCHS = 3
+    N_EPOCHS = 50
     CLIP = 10
     SAVE_DIR = 'models/bidirectional_16x16'
     res_train = []
@@ -334,16 +334,16 @@ if training:
 
         print(
             '| Epoch: {} | Train Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, train_loss, math.exp(train_loss), acc))
+        epochtime = time.time()-start
+        print("used time: "+ str(epochtime))
     np.savetxt('./csv_16x16/train_distance.csv',res_train,delimiter=',',fmt='%f')
     np.savetxt('./csv_16x16/train_optimal_distance.csv',optimal_train,delimiter=',',fmt='%f')
-    np.savetxt('./csv_16x16/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')
-    epochtime = time.time()-start
-    print("used time: "+ str(epochtime))
+    np.savetxt('./csv_16x16/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')  
 else:
     """
     Test model
     """
-    N_EPOCHS = 2
+    N_EPOCHS = 50
     res_train = []
     res = []
     optimal_train = []
