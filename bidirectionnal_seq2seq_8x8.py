@@ -219,13 +219,13 @@ def loading_data(num_robots):
     print("Obtain training data")
     #distanceMatrices = np.loadtxt('distanceMatrices.csv', dtype=float)
     #assignmentMatrices = np.loadtxt('assignmentMatrices.csv', dtype=int)
-    distanceMatrices = pandas.read_csv('../8x8_SeqData/distanceMatrices.csv',
+    distanceMatrices = pandas.read_csv('../../8x8_SeqData/distanceMatrices.csv',
                                        header=None,
                                        nrows=600000,
                                        sep=' ',
                                        dtype='float')
     distanceMatrices = distanceMatrices.values
-    assignmentMatrices = pandas.read_csv('../8x8_SeqData/assignmentMatrices.csv',
+    assignmentMatrices = pandas.read_csv('../../8x8_SeqData/assignmentMatrices.csv',
                                        header=None,
                                        nrows=600000,
                                        sep=' ',
