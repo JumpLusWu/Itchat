@@ -294,7 +294,7 @@ training = True
 Train model
 """
 if training:
-    N_EPOCHS = 3
+    N_EPOCHS = 50
     CLIP = 10
     SAVE_DIR = 'models/bidirectional_8x8'
     res_train = []
@@ -324,7 +324,7 @@ else:
     """
     Test model
     """
-    N_EPOCHS = 3
+    N_EPOCHS = 50
     res_train = []
     res = []
     optimal_train = []
