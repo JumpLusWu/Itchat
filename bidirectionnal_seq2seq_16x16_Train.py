@@ -229,7 +229,7 @@ def loading_data(num_robots):
 
     distanceMatrices2 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_300w.csv',
                                        header=None,
-                                       nrows=2000000,
+                                       nrows=500000,
                                        sep=' ',
                                        dtype='float')
     distanceMatrices2 = distanceMatrices2.values
@@ -242,7 +242,7 @@ def loading_data(num_robots):
     assignmentMatrices1 = assignmentMatrices1.values
     assignmentMatrices2 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_300w.csv',
                                        header=None,
-                                       nrows=2000000,
+                                       nrows=500000,
                                        sep=' ',
                                        dtype='float')
     assignmentMatrices2 = assignmentMatrices2.values
