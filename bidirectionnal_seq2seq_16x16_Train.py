@@ -275,7 +275,7 @@ Initialize model
 num_robots = 16
 BATCH_SIZE = 1024
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:3' if torch.cuda.is_available() else 'cpu')
 print('Device is {0}'.format(device))
 
 X_train, y_train, X_test, y_test = loading_data(num_robots = num_robots)
