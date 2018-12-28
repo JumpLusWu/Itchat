@@ -222,27 +222,27 @@ def loading_data(num_robots):
     #assignmentMatrices = np.loadtxt('assignmentMatrices.csv', dtype=int)
     distanceMatrices1 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_500w.csv',
                                        header=None,
-                                       nrows=1,
+                                       nrows=3000000,
                                        sep=' ',
                                        dtype='float')
     distanceMatrices1 = distanceMatrices1.values
 
     distanceMatrices2 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_300w.csv',
                                        header=None,
-                                       nrows=2000000,
+                                       nrows=500000,
                                        sep=' ',
                                        dtype='float')
     distanceMatrices2 = distanceMatrices2.values
     distanceMatrices = np.concatenate((distanceMatrices1,distanceMatrices2))
     assignmentMatrices1 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_500w.csv',
                                        header=None,
-                                       nrows=1,
+                                       nrows=3000000,
                                        sep=' ',
                                        dtype='float')
     assignmentMatrices1 = assignmentMatrices1.values
     assignmentMatrices2 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_300w.csv',
                                        header=None,
-                                       nrows=2000000,
+                                       nrows=500000,
                                        sep=' ',
                                        dtype='float')
     assignmentMatrices2 = assignmentMatrices2.values
@@ -273,7 +273,7 @@ def loading_data(num_robots):
 Initialize model
 """
 num_robots = 16
-BATCH_SIZE = 1024
+BATCH_SIZE = 256
 
 device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
 print('Device is {0}'.format(device))
@@ -306,17 +306,18 @@ optimizer = optim.Adam(model.parameters())
 
 criterion = nn.CrossEntropyLoss()
 
-training = False
+training = True
 """
 Train model
 """
 if training:
     N_EPOCHS = 50
     CLIP = 10
-    SAVE_DIR = 'models/bidirectional_16x16'
+    SAVE_DIR = 'models_trial2/bidirectional_16x16'
     res_train = []
     optimal_train = []
     train_acc_list = []
+    train_loss_list    = [] 
 
     if not os.path.isdir('{}'.format(SAVE_DIR)):
         os.makedirs('{}'.format(SAVE_DIR))
@@ -324,7 +325,7 @@ if training:
     # continue from the last training epoch
     MODEL_SAVE_PATH = os.path.join(SAVE_DIR, 'tut1_model' + str(N_EPOCHS) + '.pt')
     model.load_state_dict(torch.load(MODEL_SAVE_PATH))
-    SAVE_DIR_NEW = 'models/bidirectional_16x16_NEW'
+    SAVE_DIR_NEW = 'models_trial2/bidirectional_16x16_NEW'
     
     for epoch in range(N_EPOCHS):
 
@@ -332,7 +333,7 @@ if training:
         optimal_train.append(avg_optimal_dis)
         res_train.append(avg_pred_dis)
         train_acc_list.append(acc)	
-
+        train_loss_list.append(train_loss)
         if (epoch+1) % 1 == 0:
             MODEL_SAVE_PATH = os.path.join(SAVE_DIR_NEW, 'tut1_model'+str(epoch+1)+'.pt')
             torch.save(model.state_dict(), MODEL_SAVE_PATH)
@@ -341,9 +342,10 @@ if training:
             '| Epoch: {} | Train Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, train_loss, math.exp(train_loss), acc))
         epochtime = time.time()-start
         print("used time: "+ str(epochtime))
-    np.savetxt('./csv_16x16/train_distance.csv',res_train,delimiter=',',fmt='%f')
-    np.savetxt('./csv_16x16/train_optimal_distance.csv',optimal_train,delimiter=',',fmt='%f')
-    np.savetxt('./csv_16x16/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')  
+        np.savetxt('./csv_16x16_trial2/train_distance.csv',res_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial2/train_optimal_distance.csv',optimal_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial2/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial2/train_loss.csv',train_loss_list,delimiter=',',fmt='%f')  
 else:
     """
     Test model
