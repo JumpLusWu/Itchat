@@ -222,7 +222,7 @@ def loading_data(num_robots):
     #assignmentMatrices = np.loadtxt('assignmentMatrices.csv', dtype=int)
     distanceMatrices1 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_500w.csv',
                                        header=None,
-                                       nrows= 4200000,
+                                       nrows= 3500000,
                                        sep=' ',
                                        dtype='float')
     distanceMatrices1 = distanceMatrices1.values
@@ -237,7 +237,7 @@ def loading_data(num_robots):
     distanceMatrices = distanceMatrices1
     assignmentMatrices1 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_500w.csv',
                                        header=None,
-                                       nrows=4200000,
+                                       nrows=3500000,
                                        sep=' ',
                                        dtype='float')
     assignmentMatrices1 = assignmentMatrices1.values
@@ -275,9 +275,9 @@ def loading_data(num_robots):
 Initialize model
 """
 num_robots = 16
-BATCH_SIZE = 300
+BATCH_SIZE = 256
 
-device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 print('Device is {0}'.format(device))
 
 X_train, y_train, X_test, y_test = loading_data(num_robots = num_robots)
@@ -313,9 +313,9 @@ training = True
 Train model
 """
 if training:
-    N_EPOCHS = 20
+    N_EPOCHS = 30
     CLIP = 10
-    SAVE_DIR = 'models_trial3/bidirectional_16x16'
+    SAVE_DIR = 'models_trial2/bidirectional_16x16'
     res_train = []
     optimal_train = []
     train_acc_list = []
@@ -344,10 +344,10 @@ if training:
             '| Epoch: {} | Train Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, train_loss, math.exp(train_loss), acc))
         epochtime = time.time()-start
         print("used time: "+ str(epochtime))
-        np.savetxt('./csv_16x16_trial3/train_distance.csv',res_train,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16_trial3/train_optimal_distance.csv',optimal_train,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16_trial3/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16_trial3/train_loss.csv',train_loss_list,delimiter=',',fmt='%f')  
+        np.savetxt('./csv_16x16_trial2/train_distance.csv',res_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial2/train_optimal_distance.csv',optimal_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial2/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial2/train_loss.csv',train_loss_list,delimiter=',',fmt='%f')  
 else:
     """
     Test model
