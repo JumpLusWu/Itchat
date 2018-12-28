@@ -222,31 +222,33 @@ def loading_data(num_robots):
     #assignmentMatrices = np.loadtxt('assignmentMatrices.csv', dtype=int)
     distanceMatrices1 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_500w.csv',
                                        header=None,
-                                       nrows=3000000,
+                                       nrows= 5000000,
                                        sep=' ',
                                        dtype='float')
     distanceMatrices1 = distanceMatrices1.values
 
-    distanceMatrices2 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_300w.csv',
-                                       header=None,
-                                       nrows=500000,
-                                       sep=' ',
-                                       dtype='float')
-    distanceMatrices2 = distanceMatrices2.values
-    distanceMatrices = np.concatenate((distanceMatrices1,distanceMatrices2))
+    # distanceMatrices2 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_300w.csv',
+    #                                    header=None,
+    #                                    nrows=500000,
+    #                                    sep=' ',
+    #                                    dtype='float')
+    # distanceMatrices2 = distanceMatrices2.values
+    # distanceMatrices = np.concatenate((distanceMatrices1,distanceMatrices2))
+    distanceMatrices = distanceMatrices1
     assignmentMatrices1 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_500w.csv',
                                        header=None,
-                                       nrows=3000000,
+                                       nrows=5000000,
                                        sep=' ',
                                        dtype='float')
     assignmentMatrices1 = assignmentMatrices1.values
-    assignmentMatrices2 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_300w.csv',
-                                       header=None,
-                                       nrows=500000,
-                                       sep=' ',
-                                       dtype='float')
-    assignmentMatrices2 = assignmentMatrices2.values
-    assignmentMatrices  = np.concatenate((assignmentMatrices1,assignmentMatrices2))
+    # assignmentMatrices2 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_300w.csv',
+    #                                    header=None,
+    #                                    nrows=2000000,
+    #                                    sep=' ',
+    #                                    dtype='float')
+    # assignmentMatrices2 = assignmentMatrices2.values
+    # assignmentMatrices  = np.concatenate((assignmentMatrices1,assignmentMatrices2))
+    assignmentMatrices =  assignmentMatrices1
     size0,size1  = distanceMatrices.shape
     size2,size3  = assignmentMatrices.shape
     print(str(size0)+" " + str(size1)+"  "+str(size2)+" "+str(size3))
@@ -273,9 +275,9 @@ def loading_data(num_robots):
 Initialize model
 """
 num_robots = 16
-BATCH_SIZE = 256
+BATCH_SIZE = 512
 
-device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
 print('Device is {0}'.format(device))
 
 X_train, y_train, X_test, y_test = loading_data(num_robots = num_robots)
@@ -313,7 +315,7 @@ Train model
 if training:
     N_EPOCHS = 50
     CLIP = 10
-    SAVE_DIR = 'models_trial2/bidirectional_16x16'
+    SAVE_DIR = 'models_trial3/bidirectional_16x16'
     res_train = []
     optimal_train = []
     train_acc_list = []
@@ -342,10 +344,10 @@ if training:
             '| Epoch: {} | Train Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, train_loss, math.exp(train_loss), acc))
         epochtime = time.time()-start
         print("used time: "+ str(epochtime))
-        np.savetxt('./csv_16x16_trial2/train_distance.csv',res_train,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16_trial2/train_optimal_distance.csv',optimal_train,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16_trial2/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16_trial2/train_loss.csv',train_loss_list,delimiter=',',fmt='%f')  
+        np.savetxt('./csv_16x16_trial3/train_distance.csv',res_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial3/train_optimal_distance.csv',optimal_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial3/train_acc.csv',train_acc_list,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial3/train_loss.csv',train_loss_list,delimiter=',',fmt='%f')  
 else:
     """
     Test model
