@@ -348,7 +348,7 @@ else:
     """
     Test model
     """
-    N_EPOCHS = 50
+    N_EPOCHS = 8
     res_train = []
     res = []
     optimal_train = []
@@ -371,9 +371,9 @@ else:
         test_acc_list.append(test_acc)
         print(
             '| Epoch: {} | Test Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, test_loss, math.exp(test_loss), test_acc))
-    np.savetxt('./csv_16x16/test_distance.csv',res_train,delimiter=',',fmt='%f')
-    np.savetxt('./csv_16x16/test_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
-    np.savetxt('./csv_16x16/test_acc.csv',test_acc_list,delimiter=',',fmt='%f')	
+        np.savetxt('./csv_16x16/test_distance.csv',res_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16/test_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16/test_acc.csv',test_acc_list,delimiter=',',fmt='%f')	
     #plotDistance(iterations=np.linspace(1, N_EPOCHS, N_EPOCHS), optimalDistance=np.asarray(optimal_train),
     #            totalDistances=np.asarray(res_train))
     #from matplotlib import pyplot as plt
