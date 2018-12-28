@@ -323,9 +323,9 @@ if training:
         os.makedirs('{}'.format(SAVE_DIR))
     start = time.time()
     # continue from the last training epoch
-    MODEL_SAVE_PATH = os.path.join(SAVE_DIR, 'tut1_model' + str(N_EPOCHS) + '.pt')
-    model.load_state_dict(torch.load(MODEL_SAVE_PATH))
-    SAVE_DIR_NEW = 'models_trial2/bidirectional_16x16_NEW'
+    # MODEL_SAVE_PATH = os.path.join(SAVE_DIR, 'tut1_model' + str(N_EPOCHS) + '.pt')
+    # model.load_state_dict(torch.load(MODEL_SAVE_PATH))
+    # SAVE_DIR_NEW = 'models_trial2/bidirectional_16x16_NEW'
     
     for epoch in range(N_EPOCHS):
 
