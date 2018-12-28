@@ -275,7 +275,7 @@ def loading_data(num_robots):
 Initialize model
 """
 num_robots = 16
-BATCH_SIZE = 512
+BATCH_SIZE = 300
 
 device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
 print('Device is {0}'.format(device))
@@ -313,7 +313,7 @@ training = True
 Train model
 """
 if training:
-    N_EPOCHS = 50
+    N_EPOCHS = 20
     CLIP = 10
     SAVE_DIR = 'models_trial3/bidirectional_16x16'
     res_train = []
