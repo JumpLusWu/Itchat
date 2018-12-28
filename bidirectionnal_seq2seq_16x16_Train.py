@@ -306,7 +306,7 @@ optimizer = optim.Adam(model.parameters())
 
 criterion = nn.CrossEntropyLoss()
 
-training = True
+training = False
 """
 Train model
 """
@@ -321,6 +321,11 @@ if training:
     if not os.path.isdir('{}'.format(SAVE_DIR)):
         os.makedirs('{}'.format(SAVE_DIR))
     start = time.time()
+    # continue from the last training epoch
+    MODEL_SAVE_PATH = os.path.join(SAVE_DIR, 'tut1_model' + str(N_EPOCHS) + '.pt')
+    model.load_state_dict(torch.load(MODEL_SAVE_PATH))
+    SAVE_DIR_NEW = 'models/bidirectional_16x16_NEW'
+    
     for epoch in range(N_EPOCHS):
 
         train_loss, acc, avg_pred_dis, avg_optimal_dis = train(model, train_iterator, optimizer, criterion, CLIP)
@@ -329,7 +334,7 @@ if training:
         train_acc_list.append(acc)	
 
         if (epoch+1) % 1 == 0:
-            MODEL_SAVE_PATH = os.path.join(SAVE_DIR, 'tut1_model'+str(epoch+1)+'.pt')
+            MODEL_SAVE_PATH = os.path.join(SAVE_DIR_NEW, 'tut1_model'+str(epoch+1)+'.pt')
             torch.save(model.state_dict(), MODEL_SAVE_PATH)
 
         print(
@@ -364,8 +369,8 @@ else:
         #res.append(avg_tr_pred_dis)
 
         test_acc_list.append(test_acc)
-
-        print('EPOCH: {} | Test acc: {} '.format(epoch+1,test_acc))#, train_acc))
+        print(
+            '| Epoch: {} | Test Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, test_loss, math.exp(test_loss), test_acc))
     np.savetxt('./csv_16x16/test_distance.csv',res_train,delimiter=',',fmt='%f')
     np.savetxt('./csv_16x16/test_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
     np.savetxt('./csv_16x16/test_acc.csv',test_acc_list,delimiter=',',fmt='%f')	
