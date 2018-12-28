@@ -335,7 +335,7 @@ if training:
         train_acc_list.append(acc)	
         train_loss_list.append(train_loss)
         if (epoch+1) % 1 == 0:
-            MODEL_SAVE_PATH = os.path.join(SAVE_DIR_NEW, 'tut1_model'+str(epoch+1)+'.pt')
+            MODEL_SAVE_PATH = os.path.join(SAVE_DIR, 'tut1_model'+str(epoch+1)+'.pt')
             torch.save(model.state_dict(), MODEL_SAVE_PATH)
 
         print(
