@@ -222,33 +222,31 @@ def loading_data(num_robots):
     #assignmentMatrices = np.loadtxt('assignmentMatrices.csv', dtype=int)
     distanceMatrices1 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_500w.csv',
                                        header=None,
-                                       nrows= 3500000,
+                                       nrows= 3000000,
                                        sep=' ',
                                        dtype='float')
     distanceMatrices1 = distanceMatrices1.values
 
-    # distanceMatrices2 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_300w.csv',
-    #                                    header=None,
-    #                                    nrows=500000,
-    #                                    sep=' ',
-    #                                    dtype='float')
-    # distanceMatrices2 = distanceMatrices2.values
-    # distanceMatrices = np.concatenate((distanceMatrices1,distanceMatrices2))
-    distanceMatrices = distanceMatrices1
+    distanceMatrices2 = pandas.read_csv('../../16x16_SeqData/distanceMatrices_train_300w.csv',
+                                       header=None,
+                                       nrows=500000,
+                                       sep=' ',
+                                       dtype='float')
+    distanceMatrices2 = distanceMatrices2.values
+    distanceMatrices = np.concatenate((distanceMatrices1,distanceMatrices2))
     assignmentMatrices1 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_500w.csv',
                                        header=None,
-                                       nrows=3500000,
+                                       nrows=3000000,
                                        sep=' ',
                                        dtype='float')
     assignmentMatrices1 = assignmentMatrices1.values
-    # assignmentMatrices2 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_300w.csv',
-    #                                    header=None,
-    #                                    nrows=2000000,
-    #                                    sep=' ',
-    #                                    dtype='float')
-    # assignmentMatrices2 = assignmentMatrices2.values
-    # assignmentMatrices  = np.concatenate((assignmentMatrices1,assignmentMatrices2))
-    assignmentMatrices =  assignmentMatrices1
+    assignmentMatrices2 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_300w.csv',
+                                       header=None,
+                                       nrows=500000,
+                                       sep=' ',
+                                       dtype='float')
+    assignmentMatrices2 = assignmentMatrices2.values
+    assignmentMatrices  = np.concatenate((assignmentMatrices1,assignmentMatrices2))
     size0,size1  = distanceMatrices.shape
     size2,size3  = assignmentMatrices.shape
     print(str(size0)+" " + str(size1)+"  "+str(size2)+" "+str(size3))
@@ -285,7 +283,7 @@ X_train, y_train, X_test, y_test = loading_data(num_robots = num_robots)
 train_dataset = torch.utils.data.TensorDataset(X_train, y_train)
 train_iterator = Data.DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True,drop_last=True)
 
-test_dataset = torch.utils.data.TensorDataset(X_test, y_test)
+test_dataset = torch.utils.data.TensorDataset(X_train, y_train)
 test_iterator = Data.DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True,drop_last=True)
 
 
@@ -308,7 +306,7 @@ optimizer = optim.Adam(model.parameters())
 
 criterion = nn.CrossEntropyLoss()
 
-training = True
+training = False
 """
 Train model
 """
@@ -352,32 +350,30 @@ else:
     """
     Test model
     """
-    N_EPOCHS = 8
-    res_train = []
+    N_EPOCHS = 20
+    dist_list = []
     res = []
     optimal_train = []
     optimal = []
     test_acc_list = []
-
+    test_loss_list = []
     for epoch in range(0, N_EPOCHS):
         SAVE_DIR = 'models/bidirectional_16x16'
         MODEL_SAVE_PATH = os.path.join(SAVE_DIR, 'tut1_model' + str(epoch + 1) + '.pt')
         model.load_state_dict(torch.load(MODEL_SAVE_PATH))
-
-        #train_loss, train_acc, avg_tr_pred_dis, avg_tr_optimal_dis = evaluate(model, train_iterator, criterion)
         test_loss, test_acc, avg_pred_dis, avg_optimal_dis = evaluate(model, test_iterator, criterion)
 
         optimal_train.append(avg_optimal_dis)
-        res_train.append(avg_pred_dis)
-        #optimal.append(avg_tr_optimal_dis)
-        #res.append(avg_tr_pred_dis)
+        dist_list.append(avg_pred_dis)
+        test_loss_list.append(test_loss)
+        test_acc_list.append(test_acc) 
 
-        test_acc_list.append(test_acc)
         print(
             '| Epoch: {} | Test Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, test_loss, math.exp(test_loss), test_acc))
-        np.savetxt('./csv_16x16/test_distance.csv',res_train,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16/test_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16/test_acc.csv',test_acc_list,delimiter=',',fmt='%f')	
+        np.savetxt('./csv_16x16/train_distance.csv',dist_list,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16/train_loss.csv', test_loss_list,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16/train_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16/train_acc.csv',test_acc_list,delimiter=',',fmt='%f')	
     #plotDistance(iterations=np.linspace(1, N_EPOCHS, N_EPOCHS), optimalDistance=np.asarray(optimal_train),
     #            totalDistances=np.asarray(res_train))
     #from matplotlib import pyplot as plt
