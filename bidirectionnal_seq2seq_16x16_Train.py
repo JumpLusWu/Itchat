@@ -359,7 +359,7 @@ else:
     test_acc_list = []
     test_loss_list = []
     for epoch in range(0, N_EPOCHS):
-        SAVE_DIR = 'models/bidirectional_16x16'
+        SAVE_DIR = 'models_trial2/bidirectional_16x16'
         MODEL_SAVE_PATH = os.path.join(SAVE_DIR, 'tut1_model' + str(epoch + 1) + '.pt')
         model.load_state_dict(torch.load(MODEL_SAVE_PATH))
         test_loss, test_acc, avg_pred_dis, avg_optimal_dis = evaluate(model, test_iterator, criterion)
@@ -371,10 +371,10 @@ else:
 
         print(
             '| Epoch: {} | Train Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, test_loss, math.exp(test_loss), test_acc))
-        np.savetxt('./csv_16x16/test_distance.csv',dist_list,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16/test_loss.csv', test_loss_list,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16/test_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
-        np.savetxt('./csv_16x16/test_acc.csv',test_acc_list,delimiter=',',fmt='%f')	
+        np.savetxt('./csv_16x16_trial2/test_distance.csv',dist_list,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial2/test_loss.csv', test_loss_list,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial2/test_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
+        np.savetxt('./csv_16x16_trial2/test_acc.csv',test_acc_list,delimiter=',',fmt='%f')	
     #plotDistance(iterations=np.linspace(1, N_EPOCHS, N_EPOCHS), optimalDistance=np.asarray(optimal_train),
     #            totalDistances=np.asarray(res_train))
     #from matplotlib import pyplot as plt
