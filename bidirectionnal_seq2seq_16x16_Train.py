@@ -275,7 +275,7 @@ Initialize model
 num_robots = 16
 BATCH_SIZE = 256
 
-device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 print('Device is {0}'.format(device))
 
 X_train, y_train, X_test, y_test = loading_data(num_robots = num_robots)
@@ -369,7 +369,7 @@ else:
         test_acc_list.append(test_acc) 
 
         print(
-            '| Epoch: {} | Test Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, test_loss, math.exp(test_loss), test_acc))
+            '| Epoch: {} | Train Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, test_loss, math.exp(test_loss), test_acc))
         np.savetxt('./csv_16x16/train_distance.csv',dist_list,delimiter=',',fmt='%f')
         np.savetxt('./csv_16x16/train_loss.csv', test_loss_list,delimiter=',',fmt='%f')
         np.savetxt('./csv_16x16/train_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
