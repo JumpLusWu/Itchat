@@ -370,7 +370,7 @@ else:
         test_acc_list.append(test_acc) 
 
         print(
-            '| Epoch: {} | Test Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, test_loss, math.exp(test_loss), test_acc))
+            '| Epoch: {} | Train Loss: {} | Train PPL: {} | Train Accuracy: {}'.format(epoch+1, test_loss, math.exp(test_loss), test_acc))
         np.savetxt('./csv_16x16/train_distance.csv',dist_list,delimiter=',',fmt='%f')
         np.savetxt('./csv_16x16/train_loss.csv', test_loss_list,delimiter=',',fmt='%f')
         np.savetxt('./csv_16x16/train_optimval_distance.csv',optimal_train,delimiter=',',fmt='%f')
