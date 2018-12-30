@@ -233,8 +233,8 @@ def loading_data(num_robots):
                                        nrows=500000,
                                        sep=' ',
                                        dtype='float')
-    distanceMatrices = distanceMatrices2.values
-    # distanceMatrices = np.concatenate((distanceMatrices1,distanceMatrices2))
+    distanceMatrices2 = distanceMatrices2.values
+    distanceMatrices = np.concatenate((distanceMatrices1,distanceMatrices2))
     assignmentMatrices1 = pandas.read_csv('../../16x16_SeqData/assignmentMatrices_train_500w.csv',
                                        header=None,
                                        nrows=3000000,
@@ -246,8 +246,8 @@ def loading_data(num_robots):
                                        nrows=500000,
                                        sep=' ',
                                        dtype='float')
-    assignmentMatrices = assignmentMatrices2.values
-    # assignmentMatrices  = np.concatenate((assignmentMatrices1,assignmentMatrices2))
+    assignmentMatrices2 = assignmentMatrices2.values
+    assignmentMatrices  = np.concatenate((assignmentMatrices1,assignmentMatrices2))
     size0,size1  = distanceMatrices.shape
     size2,size3  = assignmentMatrices.shape
     print(str(size0)+" " + str(size1)+"  "+str(size2)+" "+str(size3))
